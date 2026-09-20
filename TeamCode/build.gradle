@@ -24,6 +24,18 @@ android {
     }
 }
 
+repositories {
+    maven { url = 'https://maven.brott.dev/' }
+    maven { url = "https://repo.dairy.foundation/releases" }
+    // maven { url = "https://mymaven.bylazar.com/releases" }
+}
+
 dependencies {
     implementation project(':FtcRobotController')
+    implementation("dev.frozenmilk.sinister:Sloth:0.2.4")
+    implementation('com.pedropathing:ftc:2.0.6')
+    implementation('com.pedropathing:telemetry:1.0.0')
+    implementation('com.bylazar.sloth:fullpanels:0.2.4.1+1.0.12')
+    implementation("org.solverslib:core:0.3.3")
+    implementation("org.solverslib:pedroPathing:0.3.3")
 }
