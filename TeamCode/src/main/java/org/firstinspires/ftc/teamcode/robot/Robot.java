@@ -62,11 +62,11 @@ public class Robot {
 
     }
     public class Balling{
-        public DcMotorEx intake, shooter;
+        public DcMotorEx intake, shooter1, shooter2;
         public Servo stopper, light;
         public final int TICKS = 28;
-        public final double GREEN = .5;
-        public final double RED = .279;
+        public double stopValue = 0, proceedValue = .4;
+        public final double GREEN = .5, RED = .279;
 
         public void init(HardwareMap hardwareMap){
             intake = hardwareMap.get(DcMotorEx.class,"intake");
@@ -75,11 +75,17 @@ public class Robot {
             intake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 
-            shooter = hardwareMap.get(DcMotorEx.class,"shooter");
-            shooter.setDirection(DcMotorSimple.Direction.FORWARD);
-            shooter.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            shooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            shooter.setVelocityPIDFCoefficients(P,I,D,F);
+            shooter1 = hardwareMap.get(DcMotorEx.class,"shooter");
+            shooter1.setDirection(DcMotorSimple.Direction.FORWARD);
+            shooter1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            shooter1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            shooter1.setVelocityPIDFCoefficients(P,I,D,F);
+
+            shooter2 = hardwareMap.get(DcMotorEx.class,"shooter");
+            shooter2.setDirection(DcMotorSimple.Direction.FORWARD);
+            shooter2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            shooter2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            shooter2.setVelocityPIDFCoefficients(P,I,D,F);
 
             light = hardwareMap.get(Servo.class, "light");
             setColor(0);
@@ -91,18 +97,24 @@ public class Robot {
         public void setColor(double color) {
             light.setPosition(color);
         }
+        public void stop () { stopper.setPosition(stopValue); }
+        public void proceed () { stopper.setPosition(proceedValue);  }
 
         public void outtake(double RPS){
-            shooter.setVelocity(RPS * TICKS);
+            shooter1.setVelocity(RPS * TICKS);
+            shooter2.setVelocity(RPS * TICKS);
         }
         public void shooterBrake(){
-            shooter.setPower(0);
-            shooter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            shooter1.setPower(0);
+            shooter2.setPower(0);
+            shooter1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            shooter2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         }
         public double getRPS(){
-            return shooter.getVelocity() / TICKS;
+            return ((shooter1.getVelocity() + shooter2.getVelocity()) / TICKS) / 2;
         }
         public void setPValue(double value) { P = value; }
+
     }
     public class Vision{
         public Limelight3A limelight;
