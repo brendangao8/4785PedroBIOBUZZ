@@ -4,6 +4,7 @@ import com.bylazar.configurables.PanelsConfigurables;
 import com.bylazar.configurables.annotations.Configurable;
 import com.bylazar.configurables.annotations.IgnoreConfigurable;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -62,27 +63,31 @@ public class Robot {
 
     }
     public class Balling{
-        public DcMotorEx intake, shooter1, shooter2;
-        public Servo stopper, light;
+        public DcMotorEx intake1, intake2, shooter1, shooter2;
+        public Servo stopper, protector1, protector2, light;
         public final int TICKS = 28;
-        public double stopValue = 0, proceedValue = .4;
+        public double stopValue = 0, proceedValue = .4, protectValue = 0.0, collectValue = .50;
         public final double GREEN = .5, RED = .279;
 
         public void init(HardwareMap hardwareMap){
-            intake = hardwareMap.get(DcMotorEx.class,"intake");
-            intake.setDirection(DcMotorSimple.Direction.FORWARD);
-            intake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            intake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            intake1 = hardwareMap.get(DcMotorEx.class,"intake1");
+            intake1.setDirection(DcMotorSimple.Direction.FORWARD);
+            intake1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            intake1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+            intake2 = hardwareMap.get(DcMotorEx.class,"intake2");
+            intake2.setDirection(DcMotorSimple.Direction.REVERSE);
+            intake2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            intake2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-            shooter1 = hardwareMap.get(DcMotorEx.class,"shooter");
+            shooter1 = hardwareMap.get(DcMotorEx.class,"shooter1");
             shooter1.setDirection(DcMotorSimple.Direction.FORWARD);
             shooter1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             shooter1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             shooter1.setVelocityPIDFCoefficients(P,I,D,F);
 
-            shooter2 = hardwareMap.get(DcMotorEx.class,"shooter");
-            shooter2.setDirection(DcMotorSimple.Direction.FORWARD);
+            shooter2 = hardwareMap.get(DcMotorEx.class,"shooter2");
+            shooter2.setDirection(DcMotorSimple.Direction.REVERSE);
             shooter2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             shooter2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             shooter2.setVelocityPIDFCoefficients(P,I,D,F);
@@ -92,6 +97,13 @@ public class Robot {
 
             stopper = hardwareMap.get(Servo.class,"stopper");
             stopper.setPosition(0.73);
+
+            protector1 = hardwareMap.get(Servo.class,"protector1");
+            protector1.setPosition(0.0);
+            protector1.setDirection(Servo.Direction.REVERSE);
+            protector2 = hardwareMap.get(Servo.class,"protector2");
+            protector2.setPosition(0.0);
+
         }
 
         public void setColor(double color) {
@@ -99,6 +111,31 @@ public class Robot {
         }
         public void stop () { stopper.setPosition(stopValue); }
         public void proceed () { stopper.setPosition(proceedValue);  }
+
+        public void protect () {
+            protector1.setPosition(protectValue);
+            protector2.setPosition(protectValue);
+        }
+
+        public void liftCollect () {
+            protector1.setPosition(collectValue);
+            protector2.setPosition(collectValue);
+        }
+
+        public void stopIntake () {
+            intake1.setPower(0);
+            intake2.setPower(0);
+        }
+
+        public void intake () {
+            intake1.setPower(1);
+            intake2.setPower(1);
+        }
+
+        public void eject () {
+            intake1.setPower(-1);
+            intake2.setPower(-1);
+        }
 
         public void outtake(double RPS){
             shooter1.setVelocity(RPS * TICKS);
