@@ -15,7 +15,8 @@ public class Fixed4785BB extends LinearOpMode {
 
     public static double RPS = 30;
 
-    public boolean last = true;
+    public boolean lastAState = true;
+    public int aCount = 0;
 
     public boolean isIntaking = false, isShooting = false;
 
@@ -39,6 +40,17 @@ public class Fixed4785BB extends LinearOpMode {
 //            }
 //            lastButtonState = currentButtonState;
 
+            boolean currentButtonState = gamepad1.a;
+            if (currentButtonState && !lastAState) {
+                if (aCount % 2 == 0) {
+                    robot.balling.outtake(35);
+                } else if (aCount % 2 == 1) {
+                    robot.balling.outtake(0);
+                }
+                aCount++;
+            }
+            lastAState = currentButtonState;
+
             boolean openServo = false;
             boolean lastRightTriggerState = false;
 
@@ -51,21 +63,21 @@ public class Fixed4785BB extends LinearOpMode {
             if (openServo){
                 robot.balling.proceed();
                 sleep(200);
-                robot.balling.intake.setPower(1);
+                robot.balling.intake();
                 isIntaking = true;
             }
             if (gamepad1.right_bumper) {
                 robot.balling.stop();
-                robot.balling.intake.setPower(1);
+                robot.balling.intake();
                 isIntaking = true;
             }
             if (gamepad1.left_trigger > 0.05) {
-                robot.balling.intake.setPower(-1);
+                robot.balling.eject();
                 isIntaking = false;
                 robot.balling.stop();
             }
             if (!gamepad1.right_bumper && !openServo && gamepad1.left_trigger < 0.05) {
-                robot.balling.intake.setPower(0);
+                robot.balling.stopIntake();
                 isIntaking = false;
                 robot.balling.stop();
             }
