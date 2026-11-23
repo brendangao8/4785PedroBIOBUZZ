@@ -32,14 +32,20 @@ public class AutoExample extends CommandOpMode {
     private ShooterSubsystem shooterSubsystem;
     private IntakeSubsystem intakeSubsystem;
     private StopperSubsystem stopperSubsystem;
-    private int scoreAngle = 45, collectAngle = 225;
+//    private final Pose oppositeScorePose = new Pose(56, 132, Math.toRadians(-90)); // Start Pose
+//    private final Pose collect1Pose = new Pose(5, 48, Math.toRadians(180)); // First Collect
+//    private final Pose pickup2Pose = new Pose(56, 132, Math.toRadians(90)); // Third Set
+//
+//    private final Pose collect2Pose = new Pose(56, 139, Math.toRadians(90)); // Second Collect
+//    private final Pose return3Pose = new Pose(10, 18, Math.toRadians(-90)); // Third Set
     private final Pose startPose = new Pose(56, 8, Math.toRadians(90)); // Start Pose
-    private final Pose collect1Pose = new Pose(0, 8, Math.toRadians(collectAngle)); // First Collect
-    private final Pose collect2Pose = new Pose(56, 40, Math.toRadians(90)); // Second Collect
-    private final Pose pickup3Pose = new Pose(94, 18, Math.toRadians(-90)); // Third Set
-    private final Pose collect3Pose = new Pose(94, 8, Math.toRadians(-90)); // Third Collect
-    private final Pose collect4Pose = new Pose(8, 47, Math.toRadians(180)); // Third Collect
-    private final Pose outOfStartPose = new Pose(56, 30, Math.toRadians(collectAngle)); // Escape
+    private final Pose oppositeScorePose = new Pose(50, 132, Math.toRadians(-85)); // Start Pose
+    private final Pose collect1Pose = new Pose(0, 8, Math.toRadians(180)); // First Collect
+    private final Pose collect2Pose = new Pose(8, 47, Math.toRadians(180)); // Second Collect
+    private final Pose pickup3Pose = new Pose(56, 132, Math.toRadians(-90)); // Third Set
+    private final Pose collect3Pose = new Pose(56, 139, Math.toRadians(-90)); // Third Collect
+    private final Pose collect4Pose = new Pose(8, 47, Math.toRadians(180)); // Fourth Collect
+    private final Pose outOfStartPose = new Pose(56, 30, Math.toRadians(90)); // Escape
 
     @Override
     public void initialize() {
