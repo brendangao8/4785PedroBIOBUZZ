@@ -39,9 +39,9 @@ public class ShootTest extends LinearOpMode {
             }
             lastRightBumperState = currentRightBumperState;
 
-            robot.balling.shooter.setVelocity(RPS * tick);
+            robot.balling.outtake(tick);
 
-            robot.balling.intake.setPower(1);
+            robot.balling.intake();
 
             robot.balling.proceed();
             telemetry.addData("Target RPS: ", RPS);

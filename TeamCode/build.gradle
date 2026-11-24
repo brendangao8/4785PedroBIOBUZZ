@@ -1,16 +1,16 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        google()
+        maven { url "https://repo.dairy.foundation/releases" }
+    }
+    dependencies {
+        classpath "dev.frozenmilk:Load:0.3.2"
+    }
+}
+
 apply plugin: 'com.android.application'
-
-//
-// build.gradle in TeamCode
-//
-// Most of the definitions for building your module reside in a common, shared
-// file 'build.common.gradle'. Being factored in this way makes it easier to
-// integrate updates to the FTC into your code. If you really need to customize
-// the build definitions, you can place those customizations in this file, but
-// please think carefully as to whether such customizations are really necessary
-// before doing so.
-
-// Custom definitions may go here
+apply plugin: 'dev.frozenmilk.sinister.sloth.load'
 
 // Include common definitions from above.
 apply from: '../build.common.gradle'
@@ -30,15 +30,16 @@ android {
 repositories {
     maven { url = 'https://maven.brott.dev/' }
     maven { url = "https://repo.dairy.foundation/releases" }
-    // maven { url = "https://mymaven.bylazar.com/releases" }
+    maven { url = "https://mymaven.bylazar.com/releases" }
 }
 
 dependencies {
-    implementation project(':FtcRobotController')
-    implementation("dev.frozenmilk.sinister:Sloth:0.2.4")
-    implementation('com.pedropathing:ftc:2.0.6')
+    implementation('com.pedropathing:ftc:2.1.2')
     implementation('com.pedropathing:telemetry:1.0.0')
-    implementation('com.bylazar.sloth:fullpanels:0.2.4.1+1.0.12')
-    implementation("org.solverslib:core:0.3.3")
-    implementation("org.solverslib:pedroPathing:0.3.3")
+
+    implementation("dev.frozenmilk.sinister:Sloth:0.3.2")
+    implementation('com.bylazar:fullpanels:1.0.20')
+
+    implementation("org.solverslib:core:0.3.6")
+    implementation("org.solverslib:pedroPathing:0.3.6")
 }

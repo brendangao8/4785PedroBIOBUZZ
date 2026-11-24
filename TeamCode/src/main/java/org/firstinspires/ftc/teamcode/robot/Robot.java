@@ -63,7 +63,7 @@ public class Robot {
 
     }
     public class Balling{
-        public DcMotorEx intake1, intake2, shooter1, shooter2;
+        public DcMotorEx intake1, shooter1, shooter2;
         public Servo stopper, protector1, protector2, light;
         public final int TICKS = 28;
         public double stopValue = 0, proceedValue = .4, protectValue = 0.0, collectValue = .50;
@@ -74,11 +74,6 @@ public class Robot {
             intake1.setDirection(DcMotorSimple.Direction.FORWARD);
             intake1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             intake1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-            intake2 = hardwareMap.get(DcMotorEx.class,"intake2");
-            intake2.setDirection(DcMotorSimple.Direction.REVERSE);
-            intake2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            intake2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
             shooter1 = hardwareMap.get(DcMotorEx.class,"shooter1");
             shooter1.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -124,17 +119,14 @@ public class Robot {
 
         public void stopIntake () {
             intake1.setPower(0);
-            intake2.setPower(0);
         }
 
         public void intake () {
             intake1.setPower(1);
-            intake2.setPower(1);
         }
 
         public void eject () {
             intake1.setPower(-1);
-            intake2.setPower(-1);
         }
 
         public void outtake(double RPS){
